@@ -7,8 +7,6 @@ export default function Index() {
     name: "",
   });
 
-  const [arrayArgo, setArrayArgo] = useState([{ nomArg: "" }]);
-
   const saveNewArgonaute = (e) => {
     setNewArgo({
       name: e.target.value,
@@ -19,16 +17,6 @@ export default function Index() {
     e.preventDefault();
     console.log("No Reload");
     console.log("Argo Name : ", newArgo);
-    const newArrayforArgo = [...arrayArgo];
-
-    const newArgotoAdd = {};
-    newArgotoAdd.nomArg = newArgo.name;
-
-    newArrayforArgo.push(newArgotoAdd);
-    console.log("newArrayforArgo : ", newArrayforArgo);
-    setArrayArgo(newArrayforArgo);
-
-    console.log("arrayArgo : ", arrayArgo);
   };
 
   return (
