@@ -28,7 +28,7 @@ export default function Index() {
     console.log("newArrayforArgo : ", newArrayforArgo);
     setArrayArgo(newArrayforArgo);
 
-    console.log(arrayArgo);
+    console.log("arrayArgo : ", arrayArgo);
   };
 
   return (
