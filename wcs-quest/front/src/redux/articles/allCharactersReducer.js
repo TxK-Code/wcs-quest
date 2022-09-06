@@ -11,7 +11,7 @@ function allCharactersReducer(state = INITIAL_STATE, action) {
       newArrSec.unshift(action.payload);
 
       return {
-        ...state,
+        state,
         allCharacters: newArrSec,
       };
     }

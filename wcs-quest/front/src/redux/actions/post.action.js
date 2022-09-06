@@ -17,6 +17,21 @@ export const getCharacters = () => {
   };
 };
 
+export const delCharacters = (data) => {
+  return (dispatch) => {
+    return axios
+      .post("http://localhost:3004/api/delGuy", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log("User Deleted");
+      })
+      .catch((err) => alert("Chargement des personnages impossible."));
+  };
+};
+
 export const addCharacters = (data) => {
   return (dispatch) => {
     return axios

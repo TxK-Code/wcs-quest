@@ -26,30 +26,30 @@ const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
-app.use("/api/addCharacters", (req, res, next) => {
-  const nameToAdd = req.body;
+// app.use("/api/addCharacters", (req, res, next) => {
+//   const nameToAdd = req.body;
 
-  console.log(nameToAdd, " nameToAdd");
+//   console.log(nameToAdd, " nameToAdd");
 
-  db.query(
-    `INSERT INTO charactersnames (charactername) VALUES ("${nameToAdd.name}")`,
-    function (err, result) {
-      db.query(
-        `DELETE from charactersnames WHERE charactername = "undefined"
-      `,
-        function (err, result) {
-          db.query(
-            `SELECT * FROM charactersnames WHERE charactername = "${nameToAdd.name}"`,
-            function (err, result) {
-              console.log(JSON.stringify(result), "RESULTATTTTTT");
-            }
-          );
-          res.status(200).json(`${nameToAdd.name}`);
-        }
-      );
-    }
-  );
-});
+//   db.query(
+//     `INSERT INTO charactersnames (charactername) VALUES ("${nameToAdd.name}")`,
+//     function (err, result) {
+//       db.query(
+//         `DELETE from charactersnames WHERE charactername = "undefined"
+//       `,
+//         function (err, result) {
+//           db.query(
+//             `SELECT * FROM charactersnames WHERE charactername = "${nameToAdd.name}"`,
+//             function (err, result) {
+//               console.log(JSON.stringify(result), "RESULTATTTTTT");
+//             }
+//           );
+//           res.status(200).json(`${nameToAdd.name}`);
+//         }
+//       );
+//     }
+//   );
+// });
 
 app.use("/api/addNewGuy", (req, res, next) => {
   const nameToAdd = req.body;
@@ -75,6 +75,38 @@ app.use("/api/addNewGuy", (req, res, next) => {
               throw err;
             }
             res.status(200).json(`${nameToAdd.name}`);
+          }
+        );
+      }
+    }
+  );
+});
+
+app.use("/api/delGuy", (req, res, next) => {
+  const nameToDel = req.body;
+
+  console.log(nameToDel, " nameToDel");
+
+  db.query(
+    `SELECT * FROM charactersnames WHERE idcharactersnames = "${nameToDel.idcharactersnames}"`,
+    function (err, result) {
+      const gotcha = JSON.parse(JSON.stringify(result));
+      console.log(gotcha.length, "result");
+      if (err) {
+        throw err;
+      }
+      if (gotcha.length === 0) {
+        res.status(204).json(`${nameToDel.charactername}`);
+      }
+      if (gotcha.length === 1) {
+        console.log(gotcha, "Gotcha");
+        db.query(
+          `DELETE FROM charactersnames WHERE idcharactersnames = "${nameToDel.idcharactersnames}"`,
+          function (err, result) {
+            if (err) {
+              throw err;
+            }
+            res.status(200).json(`${nameToDel.charactername}`);
           }
         );
       }

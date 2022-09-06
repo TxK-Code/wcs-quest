@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
-import { addCharacters, getCharacters } from "../redux/actions/post.action";
+import {
+  addCharacters,
+  getCharacters,
+  delCharacters,
+} from "../redux/actions/post.action";
 
 import "../Sass/Index.scss";
 
@@ -18,14 +22,15 @@ export default function Index() {
   });
 
   useEffect(() => {
-    if (allCharacters[0] === undefined) {
+    if (allCharacters.length === 0) {
       dispatch(getCharacters());
-      setNumberCharacters(1);
     }
-    if (allCharacters[0] && allCharacters.length !== numberCharacters) {
-      const howMany = allCharacters.length;
+    if (allCharacters[0] && allCharacters[0].length !== numberCharacters) {
       dispatch(getCharacters());
-      setNumberCharacters(howMany);
+      setNumberCharacters(allCharacters[0].length);
+    }
+    if (allCharacters[0]) {
+      console.log(allCharacters[0].length, numberCharacters, "Id");
     }
   });
 
@@ -53,6 +58,12 @@ export default function Index() {
     } else {
       alert("Nom invalide, il ne doit contenir que des lettres.");
     }
+  };
+
+  const removeGuy = (e) => {
+    console.log(e.idcharactersnames, "e");
+    dispatch(delCharacters(e));
+    document.location.reload();
   };
 
   const noReload = (e) => {
@@ -95,9 +106,14 @@ export default function Index() {
           {allCharacters[0]
             ? allCharacters[0].map((item) => {
                 return (
-                  <div className="member-item" key={uuidv4()}>
-                    {item.charactername}
-                  </div>
+                  <>
+                    <div className="member-item" key={uuidv4()}>
+                      <p key={uuidv4()}>{item.charactername}</p>
+                      <button onClick={() => removeGuy(item)} key={uuidv4()}>
+                        Delete
+                      </button>
+                    </div>
+                  </>
                 );
               })
             : ""}

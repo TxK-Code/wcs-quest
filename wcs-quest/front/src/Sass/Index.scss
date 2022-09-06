@@ -48,6 +48,8 @@ label {
 }
 
 .member-item {
+  display: flex;
+  justify-content: space-between;
   padding: 0.25em 0;
   width: 30%;
   text-align: center;
