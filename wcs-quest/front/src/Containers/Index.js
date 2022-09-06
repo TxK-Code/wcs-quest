@@ -1,11 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+
+import { addCharacters, getCharacters } from "../redux/actions/post.action";
 
 import "../Sass/Index.scss";
 
 export default function Index() {
+  const { allCharacters } = useSelector((state) => ({
+    ...state.allCharactersReducer,
+  }));
+
+  const [numberCharacters, setNumberCharacters] = useState(0);
+
   const [newArgo, setNewArgo] = useState({
     name: "",
   });
+
+  useEffect(() => {
+    if (allCharacters[0] === undefined) {
+      dispatch(getCharacters());
+      setNumberCharacters(1);
+    }
+    if (allCharacters[0] && allCharacters.length !== numberCharacters) {
+      const howMany = allCharacters.length;
+      dispatch(getCharacters());
+      setNumberCharacters(howMany);
+    }
+  });
+
+  const newNameValidate = (e) => {
+    const re = {
+      full: /^[a-zA-Z]+$/,
+    };
+    return re.full.test(e.name);
+  };
 
   const saveNewArgonaute = (e) => {
     setNewArgo({
@@ -13,10 +42,22 @@ export default function Index() {
     });
   };
 
+  const dispatch = useDispatch();
+
+  const olaComment = (e) => {
+    console.log(newNameValidate(e), " IS true ?");
+    if (newNameValidate(e) === true) {
+      dispatch(addCharacters(e));
+      document.getElementById("name").value = "";
+      setNumberCharacters(numberCharacters + 1);
+    } else {
+      alert("Nom invalide, il ne doit contenir que des lettres.");
+    }
+  };
+
   const noReload = (e) => {
     e.preventDefault();
-    console.log("No Reload");
-    console.log("Argo Name : ", newArgo);
+    olaComment(newArgo);
   };
 
   return (
@@ -33,7 +74,11 @@ export default function Index() {
 
       <main>
         <h2>Ajouter un(e) Argonaute</h2>
-        <form className="new-member-form" onSubmit={(e) => noReload(e)}>
+        <form
+          className="new-member-form"
+          encType="text/plain"
+          onSubmit={(e) => noReload(e)}
+        >
           <label htmlFor="name">Nom de l&apos;Argonaute</label>
           <input
             id="name"
@@ -47,9 +92,15 @@ export default function Index() {
 
         <h2>Membres de l'équipage</h2>
         <section className="member-list">
-          <div className="member-item">NoBody</div>
-          <div className="member-item">For</div>
-          <div className="member-item">Now</div>
+          {allCharacters[0]
+            ? allCharacters[0].map((item) => {
+                return (
+                  <div className="member-item" key={uuidv4()}>
+                    {item.charactername}
+                  </div>
+                );
+              })
+            : ""}
         </section>
       </main>
 
