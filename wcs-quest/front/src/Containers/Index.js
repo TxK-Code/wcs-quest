@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
+import EditLogo from "../Sass/Icones/pen-to-square-solid.svg";
+import DeleteLogo from "../Sass/Icones/trash-solid.svg";
+
 import {
   addCharacters,
   getCharacters,
@@ -56,13 +59,11 @@ export default function Index() {
     setEditNewName({
       name: e.target.value,
     });
-    console.log(modal, editNewName, "modalmodal");
   };
 
   const dispatch = useDispatch();
 
   const olaComment = (e) => {
-    console.log(newNameValidate(e), " IS true ?");
     if (newNameValidate(e) === true) {
       dispatch(addCharacters(e));
       document.getElementById("name").value = "";
@@ -74,13 +75,11 @@ export default function Index() {
   };
 
   const removeGuy = (e) => {
-    console.log(e.idcharactersnames, "e");
     dispatch(delCharacters(e));
     document.location.reload();
   };
 
   const editGuy = (e) => {
-    console.log(e, "eeeesy");
     setModale({
       isTrue: true,
       id: e.idcharactersnames,
@@ -94,9 +93,7 @@ export default function Index() {
 
   const sendEdited = (e) => {
     e.preventDefault();
-    console.log(dataToEdit.nom);
     if (newNameValidate(dataToEdit.nom) === true) {
-      console.log(newNameValidate(dataToEdit.nom), "TRRRUUE");
       dispatch(editCharacters(dataToEdit));
       setNumberCharacters(numberCharacters + 1);
       setModale({
@@ -151,20 +148,22 @@ export default function Index() {
                     <p className="member-item-name" key={uuidv4()}>
                       {item.charactername}
                     </p>
-                    <button
+                    <img
+                      src={EditLogo}
+                      alt="Edit Button"
+                      width="17px"
                       className="member-item-edit"
                       onClick={() => editGuy(item)}
                       key={uuidv4()}
-                    >
-                      Edit
-                    </button>
-                    <button
+                    />
+                    <img
+                      src={DeleteLogo}
+                      alt="Edit Button"
+                      width="17px"
                       className="member-item-delete"
                       onClick={() => removeGuy(item)}
                       key={uuidv4()}
-                    >
-                      Delete
-                    </button>
+                    />
                   </div>
                 );
               })
