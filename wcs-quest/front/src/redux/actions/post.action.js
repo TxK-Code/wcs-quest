@@ -55,3 +55,19 @@ export const addCharacters = (data) => {
       .catch((err) => alert("Ajout du personnage impossible."));
   };
 };
+
+export const editCharacters = (data) => {
+  return (dispatch) => {
+    console.log(data, "data");
+    return axios
+      .post("http://localhost:3004/api/editGuy", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log("User Edited : ", res.data);
+      })
+      .catch((err) => alert("Changement Impossible."));
+  };
+};

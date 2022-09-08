@@ -26,31 +26,6 @@ const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
-// app.use("/api/addCharacters", (req, res, next) => {
-//   const nameToAdd = req.body;
-
-//   console.log(nameToAdd, " nameToAdd");
-
-//   db.query(
-//     `INSERT INTO charactersnames (charactername) VALUES ("${nameToAdd.name}")`,
-//     function (err, result) {
-//       db.query(
-//         `DELETE from charactersnames WHERE charactername = "undefined"
-//       `,
-//         function (err, result) {
-//           db.query(
-//             `SELECT * FROM charactersnames WHERE charactername = "${nameToAdd.name}"`,
-//             function (err, result) {
-//               console.log(JSON.stringify(result), "RESULTATTTTTT");
-//             }
-//           );
-//           res.status(200).json(`${nameToAdd.name}`);
-//         }
-//       );
-//     }
-//   );
-// });
-
 app.use("/api/addNewGuy", (req, res, next) => {
   const nameToAdd = req.body;
 
@@ -118,6 +93,24 @@ app.use("/api/getCharacters", (req, res, next) => {
   db.query(`SELECT * FROM charactersnames`, function (err, result) {
     res.status(200).json(result);
   });
+});
+
+app.use("/api/editGuy", (req, res, next) => {
+  console.log(req.body);
+  const nameToEdit = req.body.name;
+  db.query(
+    `SELECT * FROM charactersnames WHERE idcharactersnames = "${nameToEdit}"`,
+    function (err, result) {
+      const gotcha = JSON.parse(JSON.stringify(result));
+
+      if (gotcha.length === 0) {
+        res.status(200).json(nameToEdit);
+      }
+      if (gotcha.length === 1) {
+        res.status(204).json(result);
+      }
+    }
+  );
 });
 
 module.exports = app;

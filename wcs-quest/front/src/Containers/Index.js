@@ -106,14 +106,18 @@ export default function Index() {
           {allCharacters[0]
             ? allCharacters[0].map((item) => {
                 return (
-                  <>
-                    <div className="member-item" key={uuidv4()}>
-                      <p key={uuidv4()}>{item.charactername}</p>
-                      <button onClick={() => removeGuy(item)} key={uuidv4()}>
-                        Delete
-                      </button>
-                    </div>
-                  </>
+                  <div className="member-item" key={uuidv4()}>
+                    <p className="member-item-name" key={uuidv4()}>
+                      {item.charactername}
+                    </p>
+                    <button
+                      className="member-item-delete"
+                      onClick={() => removeGuy(item)}
+                      key={uuidv4()}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 );
               })
             : ""}
