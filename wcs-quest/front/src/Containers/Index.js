@@ -6,6 +6,7 @@ import {
   addCharacters,
   getCharacters,
   delCharacters,
+  editCharacters,
 } from "../redux/actions/post.action";
 
 import "../Sass/Index.scss";
@@ -16,10 +17,15 @@ export default function Index() {
   }));
 
   const [numberCharacters, setNumberCharacters] = useState(0);
+  const [modal, setModale] = useState({
+    isTrue: false,
+    id: "",
+  });
 
   const [newArgo, setNewArgo] = useState({
     name: "",
   });
+  const [editNewName, setEditNewName] = useState();
 
   useEffect(() => {
     if (allCharacters.length === 0) {
@@ -46,6 +52,12 @@ export default function Index() {
       name: e.target.value,
     });
   };
+  const saveEditArgonaute = (e) => {
+    setEditNewName({
+      name: e.target.value,
+    });
+    console.log(modal, editNewName, "modalmodal");
+  };
 
   const dispatch = useDispatch();
 
@@ -54,6 +66,7 @@ export default function Index() {
     if (newNameValidate(e) === true) {
       dispatch(addCharacters(e));
       document.getElementById("name").value = "";
+      dispatch(getCharacters());
       setNumberCharacters(numberCharacters + 1);
     } else {
       alert("Nom invalide, il ne doit contenir que des lettres.");
@@ -64,6 +77,34 @@ export default function Index() {
     console.log(e.idcharactersnames, "e");
     dispatch(delCharacters(e));
     document.location.reload();
+  };
+
+  const editGuy = (e) => {
+    console.log(e, "eeeesy");
+    setModale({
+      isTrue: true,
+      id: e.idcharactersnames,
+    });
+  };
+
+  const dataToEdit = {
+    nom: editNewName,
+    id: modal.id,
+  };
+
+  const sendEdited = (e) => {
+    e.preventDefault();
+    console.log(dataToEdit.nom);
+    if (newNameValidate(dataToEdit.nom) === true) {
+      console.log(newNameValidate(dataToEdit.nom), "TRRRUUE");
+      dispatch(editCharacters(dataToEdit));
+      setNumberCharacters(numberCharacters + 1);
+      setModale({
+        isTrue: false,
+      });
+    } else {
+      alert("Le nom ne doit contenir que des lettres.");
+    }
   };
 
   const noReload = (e) => {
@@ -111,6 +152,13 @@ export default function Index() {
                       {item.charactername}
                     </p>
                     <button
+                      className="member-item-edit"
+                      onClick={() => editGuy(item)}
+                      key={uuidv4()}
+                    >
+                      Edit
+                    </button>
+                    <button
                       className="member-item-delete"
                       onClick={() => removeGuy(item)}
                       key={uuidv4()}
@@ -123,6 +171,30 @@ export default function Index() {
             : ""}
         </section>
       </main>
+
+      {modal.isTrue === true ? (
+        <div className="modale">
+          <div className="modale__box">
+            <h2 className="modale__title">Nom à éditer :</h2>
+            <form
+              action=""
+              onSubmit={sendEdited}
+              encType="text/plain"
+              className="modale__form"
+            >
+              <label htmlFor="">
+                <input
+                  className="modale__input"
+                  type="text"
+                  onInput={(e) => saveEditArgonaute(e)}
+                />
+              </label>
+            </form>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
 
       <footer>
         <p>Réalisé par Jason en Anthestérion de l'an 515 avant JC</p>

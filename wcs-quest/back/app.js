@@ -96,18 +96,23 @@ app.use("/api/getCharacters", (req, res, next) => {
 });
 
 app.use("/api/editGuy", (req, res, next) => {
-  console.log(req.body);
-  const nameToEdit = req.body.name;
+  const idToEdit = req.body.id;
+  const nameEdited = req.body.nom.name;
   db.query(
-    `SELECT * FROM charactersnames WHERE idcharactersnames = "${nameToEdit}"`,
+    `SELECT * FROM charactersnames WHERE idcharactersnames = "${idToEdit}"`,
     function (err, result) {
       const gotcha = JSON.parse(JSON.stringify(result));
-
-      if (gotcha.length === 0) {
-        res.status(200).json(nameToEdit);
-      }
-      if (gotcha.length === 1) {
-        res.status(204).json(result);
+      if (idToEdit === gotcha[0].idcharactersnames) {
+        db.query(
+          `UPDATE charactersnames
+        SET charactername = "${nameEdited}"
+        WHERE idcharactersnames = ${idToEdit}`,
+          function (err, result) {
+            res.status(200).json(result);
+          }
+        );
+      } else {
+        res.status(404).json(result);
       }
     }
   );

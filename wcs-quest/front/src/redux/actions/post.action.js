@@ -42,7 +42,6 @@ export const addCharacters = (data) => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log(`L'argonaute ${res.data} à été ajouté à la liste !`);
           dispatch({
             type: ADD_CHARACTER,
             payload: res.data,
@@ -57,8 +56,7 @@ export const addCharacters = (data) => {
 };
 
 export const editCharacters = (data) => {
-  return (dispatch) => {
-    console.log(data, "data");
+  return () => {
     return axios
       .post("http://localhost:3004/api/editGuy", data, {
         headers: {
