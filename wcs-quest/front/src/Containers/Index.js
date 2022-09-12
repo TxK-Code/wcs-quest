@@ -15,21 +15,26 @@ import {
 import "../Sass/Index.scss";
 
 export default function Index() {
+  // Used to get the character list from the redux store
   const { allCharacters } = useSelector((state) => ({
     ...state.allCharactersReducer,
   }));
 
+  // numberCharacters is set to refresh the state after adding a new character
   const [numberCharacters, setNumberCharacters] = useState(0);
+  // modal is set to open the modal and get the id of one item to edit
   const [modal, setModale] = useState({
     isTrue: false,
     id: "",
   });
 
+  // newArgo and editNewName is used to create and update a character
   const [newArgo, setNewArgo] = useState({
     name: "",
   });
   const [editNewName, setEditNewName] = useState();
 
+  // This useEffect is used to cold-refresh the main page
   useEffect(() => {
     if (allCharacters.length === 0) {
       dispatch(getCharacters());
@@ -43,6 +48,7 @@ export default function Index() {
     }
   });
 
+  // This one is set to check the syntax of the name added
   const newNameValidate = (e) => {
     const re = {
       full: /^[a-zA-Z]+$/,
@@ -50,6 +56,7 @@ export default function Index() {
     return re.full.test(e.name);
   };
 
+  // saveNewArgonaute and saveEditArgonaute catch the input target
   const saveNewArgonaute = (e) => {
     setNewArgo({
       name: e.target.value,
@@ -63,6 +70,8 @@ export default function Index() {
 
   const dispatch = useDispatch();
 
+  // olaComment check the syntax of a new character, then add him to the Db with a dispatch,
+  // then add +1 to numberCharacters for refreshing
   const olaComment = (e) => {
     if (newNameValidate(e) === true) {
       dispatch(addCharacters(e));
@@ -74,11 +83,13 @@ export default function Index() {
     }
   };
 
+  // removeGuy delete a character from DB and then make a hard refresh
   const removeGuy = (e) => {
     dispatch(delCharacters(e));
     document.location.reload();
   };
 
+  // editGuy open the modal by adding true to is param and add the id of the item
   const editGuy = (e) => {
     setModale({
       isTrue: true,
@@ -86,11 +97,14 @@ export default function Index() {
     });
   };
 
+  // This is the payload to send to the backend
   const dataToEdit = {
     nom: editNewName,
     id: modal.id,
   };
 
+  // sendEdited is same as olaComment but for editing, it check the syntax of the new name
+  // then send it to the backend and close the modal
   const sendEdited = (e) => {
     e.preventDefault();
     if (newNameValidate(dataToEdit.nom) === true) {
@@ -104,6 +118,8 @@ export default function Index() {
     }
   };
 
+  // This is the dispatch that commit the new character to the backend,
+  // the preventDefault is here to stop the refreshing action after sending a form
   const noReload = (e) => {
     e.preventDefault();
     olaComment(newArgo);
@@ -143,10 +159,14 @@ export default function Index() {
         <section className="member-list">
           {allCharacters[0]
             ? allCharacters[0].map((item) => {
+                const itemNameToDisplay = item.charactername;
+                const upperName =
+                  itemNameToDisplay.charAt(0).toUpperCase() +
+                  itemNameToDisplay.slice(1).toLowerCase();
                 return (
                   <div className="member-item" key={uuidv4()}>
                     <p className="member-item-name" key={uuidv4()}>
-                      {item.charactername}
+                      {upperName}
                     </p>
                     <img
                       src={EditLogo}

@@ -3,6 +3,8 @@ import axios from "axios";
 export const LOAD_CHARACTERS = "LOAD_CHARACTERS";
 export const ADD_CHARACTER = "ADD_CHARACTER";
 
+// The method to get all the characters, this one call the backend then return the result
+// in the redux store for display the list of characters
 export const getCharacters = () => {
   return (dispatch) => {
     return axios
@@ -17,6 +19,8 @@ export const getCharacters = () => {
   };
 };
 
+// Method to remove a character, it call the backend with a payload named "data"
+// this payload is loaded with the ID of the character and send it to the backend
 export const delCharacters = (data) => {
   return (dispatch) => {
     return axios
@@ -32,6 +36,8 @@ export const delCharacters = (data) => {
   };
 };
 
+// This one is set to add a new character, it call the backend with a payload named "data"
+// this payload is loaded with the new name of the character and send it to the backend
 export const addCharacters = (data) => {
   return (dispatch) => {
     return axios
@@ -55,6 +61,9 @@ export const addCharacters = (data) => {
   };
 };
 
+// This method is used to edit a character in the database, it call the backend with
+// a payload "data" loaded with the ID of the one who's gonna be edited and the
+// new name
 export const editCharacters = (data) => {
   return () => {
     return axios
@@ -64,7 +73,13 @@ export const editCharacters = (data) => {
         },
       })
       .then((res) => {
-        console.log("User Edited : ", res.data);
+        console.log("User Edited : ", res);
+        if (res.status === 200) {
+          console.log("Character Edited : ", res);
+        }
+        if (res.status === 204) {
+          alert("Can't edit, name already used.");
+        }
       })
       .catch((err) => alert("Changement Impossible."));
   };

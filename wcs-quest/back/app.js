@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const app = express();
 
+// The method to connect to the DB
 const db = mysql.createConnection({
   host: "localhost",
   user: "ades",
@@ -16,26 +17,27 @@ db.connect(function (err) {
   console.log("Connecté à la base de données MySQL!");
 });
 
+// CORS method to avoid error
 app.use(
   cors({
     origin: "*",
   })
 );
 
+// Used to get the informations from the front and use it
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
+// Method that get the new name to add, check in Db if the name is not already used,
+// then if there is no one with the same name, it insert into the DB the character
 app.use("/api/addNewGuy", (req, res, next) => {
   const nameToAdd = req.body;
-
-  console.log(nameToAdd.name, " nameToAdd");
 
   db.query(
     `SELECT * FROM charactersnames WHERE charactername = "${nameToAdd.name}"`,
     function (err, result) {
       const gotcha = JSON.parse(JSON.stringify(result));
-      console.log(gotcha.length, "result");
       if (err) {
         throw err;
       }
@@ -57,16 +59,14 @@ app.use("/api/addNewGuy", (req, res, next) => {
   );
 });
 
+// Used to remove a character from the DB by getting is ID and remove him
 app.use("/api/delGuy", (req, res, next) => {
   const nameToDel = req.body;
-
-  console.log(nameToDel, " nameToDel");
 
   db.query(
     `SELECT * FROM charactersnames WHERE idcharactersnames = "${nameToDel.idcharactersnames}"`,
     function (err, result) {
       const gotcha = JSON.parse(JSON.stringify(result));
-      console.log(gotcha.length, "result");
       if (err) {
         throw err;
       }
@@ -74,7 +74,6 @@ app.use("/api/delGuy", (req, res, next) => {
         res.status(204).json(`${nameToDel.charactername}`);
       }
       if (gotcha.length === 1) {
-        console.log(gotcha, "Gotcha");
         db.query(
           `DELETE FROM charactersnames WHERE idcharactersnames = "${nameToDel.idcharactersnames}"`,
           function (err, result) {
@@ -89,12 +88,16 @@ app.use("/api/delGuy", (req, res, next) => {
   );
 });
 
+// Method to get all the characters in the DB for displaying supplies
 app.use("/api/getCharacters", (req, res, next) => {
   db.query(`SELECT * FROM charactersnames`, function (err, result) {
     res.status(200).json(result);
   });
 });
 
+// This one is set to edit a character in DB, first it take the ID of the one
+// who need to be replaced, if he already exist in DB and is not already used,
+// the method UPDATE the name with the new one
 app.use("/api/editGuy", (req, res, next) => {
   const idToEdit = req.body.id;
   const nameEdited = req.body.nom.name;
@@ -104,11 +107,21 @@ app.use("/api/editGuy", (req, res, next) => {
       const gotcha = JSON.parse(JSON.stringify(result));
       if (idToEdit === gotcha[0].idcharactersnames) {
         db.query(
-          `UPDATE charactersnames
-        SET charactername = "${nameEdited}"
-        WHERE idcharactersnames = ${idToEdit}`,
+          `SELECT * FROM charactersnames WHERE charactername = "${nameEdited}"`,
           function (err, result) {
-            res.status(200).json(result);
+            console.log(result.length, "Result");
+            if (result.length === 0) {
+              db.query(
+                `UPDATE charactersnames
+              SET charactername = "${nameEdited}"
+              WHERE idcharactersnames = ${idToEdit}`,
+                function (err, result) {
+                  res.status(200).json(result);
+                }
+              );
+            } else {
+              res.status(204).json(result);
+            }
           }
         );
       } else {
