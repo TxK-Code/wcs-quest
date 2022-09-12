@@ -25,6 +25,7 @@ Back-end :
 ## Demo live du site :
 
 
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.youtube.com/watch?v=t-07IBcKgmkY)
+[![Watch the video]([https://i.imgur.com/vKb2F1B.png](https://imgur.com/a/985J12p))](https://www.youtube.com/watch?v=t-07IBcKgmkY)
+Cliquez pour une redirection sur Youtube
 
 
