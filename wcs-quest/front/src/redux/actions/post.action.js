@@ -78,7 +78,7 @@ export const editCharacters = (data) => {
           console.log("Character Edited : ", res);
         }
         if (res.status === 204) {
-          alert("Can't edit, name already used.");
+          alert("Impossible d'éditer, nom déjà utilisé.");
         }
       })
       .catch((err) => alert("Changement Impossible."));

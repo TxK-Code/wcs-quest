@@ -44,9 +44,6 @@ export default function Index() {
       dispatch(getCharacters());
       setNumberCharacters(allCharacters[0].length);
     }
-    if (allCharacters[0]) {
-      console.log(allCharacters[0].length, numberCharacters, "Id");
-    }
   });
 
   // This one is set to check the syntax of the name added
