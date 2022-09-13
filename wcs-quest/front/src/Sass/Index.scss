@@ -5,23 +5,96 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-main {
-  max-width: 960px;
-  margin: 0 auto;
-}
+// main {
+//   max-width: 960px;
+//   margin: 0 auto;
+// }
 
 header {
-  background: #f4f4f4;
+  display: flex;
+  background: #ffffff;
   text-align: center;
   padding: 2em;
 }
 
 header img {
   max-width: 96px;
+  margin-right: 2rem;
 }
 
 header h1 {
   font-size: 2.5em;
+}
+
+.mainBox {
+  display: flex;
+  flex-wrap: wrap;
+  background: #f76c6c;
+  width: 100%;
+  height: 13rem;
+  margin-bottom: 2rem;
+  &__title {
+    width: 100%;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    text-align: left;
+    color: #fff;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  }
+  &__form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 1rem;
+  }
+  &__label {
+    font-size: 1.3rem;
+    color: #fff;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  }
+  &__div {
+    display: flex;
+    flex-direction: row;
+  }
+  &__input {
+    margin-top: 1rem;
+    margin-right: 2rem;
+    border: none;
+    border-bottom: #fff solid 3px;
+    background: none;
+    font-size: 1.6rem;
+    color: #fff;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+    &::placeholder {
+      color: #fff;
+      opacity: 0.6;
+      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+    }
+    &:focus {
+      outline: none;
+      border-bottom: #fff solid 3px;
+      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+      transition: all 200ms;
+    }
+  }
+  &__button {
+    border: #fff solid 2px;
+    padding: 10px;
+    border-radius: 50%;
+    background: lighten(#f76c6c, 0%);
+    &:hover {
+      cursor: pointer;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      background: lighten(#f76c6c, 5%);
+
+      transition: all 200ms;
+    }
+  }
+  &__send {
+    color: #f76c6c;
+  }
 }
 
 h1,
@@ -40,7 +113,9 @@ label {
 }
 
 .member-list {
-  margin-top: 1rem;
+  margin: auto;
+  margin-top: 2rem;
+  width: 90%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -55,16 +130,17 @@ label {
   text-align: center;
   font-weight: 600;
   padding: 5px;
-  border: solid 2px #333;
   border-radius: 5px;
   margin-bottom: 5px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .member-item:hover {
-  background: #5c85b4;
+  background: #f76c6c;
   color: #ffffff;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
   transition: all 200ms ease;
-  cursor: pointer;
 }
 
 .member-item-name {
@@ -73,32 +149,20 @@ label {
 }
 
 .member-item-delete {
-  border: #333 solid 2px;
-  border-radius: 4px;
   padding: 1px;
   z-index: 2;
 }
 
 .member-item-delete:hover {
-  border: #333 solid 2px;
-  padding: 1px;
-  background: #f76c6c;
-  transition: all 200ms ease;
   cursor: pointer;
 }
 
 .member-item-edit {
-  border: #333 solid 2px;
-  border-radius: 4px;
   padding: 1px;
   z-index: 2;
 }
 
 .member-item-edit:hover {
-  border: #333 solid 2px;
-  padding: 1px;
-  background: #abdd97;
-  transition: all 200ms ease;
   cursor: pointer;
 }
 
@@ -117,21 +181,42 @@ footer {
   margin-top: 3rem;
   justify-content: space-around;
   align-items: center;
+  &__title {
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  }
   &__box {
     width: 100%;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #5c85b4;
+    background: #f76c6c;
     color: #ffffff;
-    border: #333 solid 3px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border-radius: 15px;
   }
   &__input {
     margin-top: 15px;
     height: 1.7rem;
     text-align: center;
-    font-size: 1.3rem;
+    border: none;
+    border-bottom: #fff solid 3px;
+    background: none;
+    font-size: 1.6rem;
+    color: #fff;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+    &::placeholder {
+      color: #fff;
+      opacity: 0.6;
+      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+    }
+    &:focus {
+      outline: none;
+      border-bottom: #fff solid 3px;
+      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+      transition: all 200ms;
+    }
   }
 }

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import EditLogo from "../Sass/Icones/pen-to-square-solid.svg";
 import DeleteLogo from "../Sass/Icones/trash-solid.svg";
+import SendLogo from "../Sass/Icones/arrow-right-solid.svg";
 
 import {
   addCharacters,
@@ -139,24 +140,39 @@ export default function Index() {
       </header>
 
       <main className="main">
-        <h2>Ajouter un(e) Argonaute</h2>
-        <form
-          className="new-member-form"
-          encType="text/plain"
-          onSubmit={(e) => noReload(e)}
-        >
-          <label htmlFor="name">Nom de l&apos;Argonaute</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Charalampos"
-            onInput={(e) => saveNewArgonaute(e)}
-          />
-          <button type="submit">Envoyer</button>
-        </form>
+        <div className="mainBox">
+          <h2 className="mainBox__title">Ajouter un(e) Argonaute :</h2>
+          <form
+            className="new-member-form mainBox__form"
+            encType="text/plain"
+            onSubmit={(e) => noReload(e)}
+          >
+            <label htmlFor="name" className="mainBox__label">
+              Nom de l&apos;Argonaute :
+            </label>
+            <div className="mainBox__div">
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Charalampos"
+                onInput={(e) => saveNewArgonaute(e)}
+                className="mainBox__input"
+              />
+              <button type="submit" className="mainBox__button">
+                <img
+                  src={SendLogo}
+                  alt="Bouton envoyer"
+                  width="32px"
+                  height="32px"
+                  className="mainBox__send"
+                />
+              </button>
+            </div>
+          </form>
+        </div>
 
-        <h2>Membres de l'équipage</h2>
+        <h2>Membres de l'équipage :</h2>
         <section className="member-list">
           {allCharacters[0]
             ? allCharacters[0].map((item) => {
