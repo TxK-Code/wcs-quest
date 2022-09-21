@@ -68,9 +68,9 @@ export default function Index() {
 
   const dispatch = useDispatch();
 
-  // olaComment check the syntax of a new character, then add him to the Db with a dispatch,
+  // addingGuy check the syntax of a new character, then add him to the Db with a dispatch,
   // then add +1 to numberCharacters for refreshing
-  const olaComment = (e) => {
+  const addingGuy = (e) => {
     if (newNameValidate(e) === true) {
       dispatch(addCharacters(e));
       document.getElementById("name").value = "";
@@ -101,12 +101,14 @@ export default function Index() {
     id: modal.id,
   };
 
-  // sendEdited is same as olaComment but for editing, it check the syntax of the new name
+  // sendEdited is same as addingGuy but for editing, it check the syntax of the new name
   // then send it to the backend and close the modal
   const sendEdited = (e) => {
     e.preventDefault();
     if (newNameValidate(dataToEdit.nom) === true) {
       dispatch(editCharacters(dataToEdit));
+      dispatch(getCharacters());
+
       setNumberCharacters(numberCharacters + 1);
       setModale({
         isTrue: false,
@@ -120,7 +122,7 @@ export default function Index() {
   // the preventDefault is here to stop the refreshing action after sending a form
   const noReload = (e) => {
     e.preventDefault();
-    olaComment(newArgo);
+    addingGuy(newArgo);
   };
 
   return (
